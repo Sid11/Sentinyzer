@@ -1,0 +1,89 @@
+{% extends 'sentiment/base.html' %}
+
+{% block BODY %}
+
+<div class="row" style="width:100vw;padding: 30px 50px 30px 70px;">
+	
+	<br>
+	<div class="col-lg-12" style="text-align: center;margin-bottom: 20px;">
+		<h3>TWITTER POSTS</h3>
+	</div>
+	
+	<div class="col-lg-6" style="margin-bottom: 30px;cursor: pointer;" data-bg="comment1" onclick="doAnalysis('comment1')" >
+
+		<div style="width: 97%;margin-right: 3%;background-color: white;border: 1px solid #ddd;padding: 15px 20px; ">
+			<span style="font-size: 18px;font-weight: bold;">GST good or bad ?</span>
+		<br>
+		<span style="font-size: 14px;color: grey;">6th September, 2018</span>
+		<br><br>
+		<h6>Comments:</h6>
+		<p id="comment1">GST is not good for poor people</p>
+            <br>
+
+            <p data-id="comment1" style="display:none;font-size: 18px;margin: 0px;"></p>
+		</div>
+		
+	</div>
+
+	<div class="col-lg-6" style="margin-bottom: 30px;cursor: pointer;" data-bg="comment2" onclick="doAnalysis('comment2')" >
+
+		<div style="width: 97%;margin-right: 3%;background-color: white;border: 1px solid #ddd;padding: 15px 20px; ">
+			<span style="font-size: 18px;font-weight: bold;">Section 377</span>
+		<br>
+		<span style="font-size: 14px;color: grey;">7th September, 2018</span>
+		<br><br>
+		<h6>Comments:</h6>
+		<p id="comment2">Decriminalizing section 377 was a great step towards a progressive society.</p>
+            <br>
+
+            <p data-id="comment2" style="display:none;font-size: 18px;margin: 0px;"></p>
+		</div>
+
+	</div>
+
+	<div class="col-lg-6" style="margin-bottom: 30px;cursor: pointer;" data-bg="comment3" onclick="doAnalysis('comment3')" >
+
+		<div style="width: 97%;margin-right: 3%;background-color: white;border: 1px solid #ddd;padding: 15px 20px; ">
+			<span style="font-size: 18px;font-weight: bold;">Has bharat band affected citizens of India?</span>
+		<br>
+		<span style="font-size: 14px;color: grey;">8th September, 2018</span>
+		<br><br>
+		<h6>Comments:</h6>
+		<p id="comment3">Yes, in some way</p>
+            <br>
+            <p data-id="comment3" style="display:none;font-size: 18px;margin: 0px;"></p>
+		</div>
+
+	</div>
+
+</div>
+<script>
+    function doAnalysis(id) {
+       var comment = $("#"+id).html();
+        console.log(comment);
+
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                $('[data-id="'+id+'"]').show();
+                $('[data-id="'+id+'"]').html("Results: "+data.b);
+                if(data.score > 0){
+                document.getElementById("").style.backgroundColor = "lightblue";
+                }else if(data.score < 0){
+                document.getElementById("mainbody").style.backgroundColor = "red";
+                }
+                $('#api_output').html(data.score);
+            }
+        };
+        xhttp.open("GET", "/analysis/?sentence="+comment, true);
+        xhttp.send();
+
+
+
+
+    }
+</script>
+
+{% endblock %}

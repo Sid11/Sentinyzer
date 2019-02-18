@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Django Highcharts Example</title>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script>
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Sentiment Analysis of your post'
+        },
+        xAxis: {
+            categories: ['POST']
+        },
+        series: [{
+            name: 'Positive',
+            data: [{{ x.pos }}],
+            color:'green'
+        }, {
+            name: 'Neutral',
+            data: [{{ x.neu }}],
+            color:'silver'
+        }, {
+            name: 'Negative',
+            data: [{{ x.neg }}],
+            color:'red'
+        }]
+    });
+  </script>
+</body>
+</html>
